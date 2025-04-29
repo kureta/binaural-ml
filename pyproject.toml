@@ -1,0 +1,31 @@
+[project]
+name = "binaural-ml"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "kureta", email = "skureta@gmail.com" }
+]
+requires-python = ">=3.11"
+dependencies = [
+    "marimo>=0.13.2",
+    "matplotlib>=3.10.1",
+    "numpy>=2.2.5",
+    "scipy>=1.15.2",
+    "soundfile>=0.13.1",
+    "spaudiopy>=0.1.6",
+    "torch>=2.7.0",
+    "torchaudio>=2.7.0",
+]
+
+[project.scripts]
+binaural-ml = "binaural_ml:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "debugpy>=1.8.14",
+]
