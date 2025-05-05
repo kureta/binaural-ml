@@ -71,14 +71,14 @@ def _(audio, c, np, sample_rate):
 
 
     # TODO: Apply HRTF
-    return dopplered_sound, fn_elliptic_orbit, simple_ild, to_polar
+    return dopplered_sound, fn_pass_by, simple_ild, to_polar
 
 
 @app.cell
 def _(
     audio,
     dopplered_sound,
-    fn_elliptic_orbit,
+    fn_pass_by,
     head_radius,
     mo,
     np,
@@ -89,12 +89,12 @@ def _(
 ):
     # Get source x,y coordinates per sample
     time = np.arange(0, len(audio)) / sample_rate
-    x, y = fn_elliptic_orbit(time)
+    x, y = fn_pass_by(time)
 
     # Convert to polar coordinates centered around left and right ears
     # TODO: angles `theta` will be used for HRTF (head-related transfer function)
     # That will filter audio as it passes through the head to reach the ear on the otherside
-    r_left, _ = to_polar((x + head_radius, y))
+    r_left, theta_left = to_polar((x + head_radius, y))
     r_right, _ = to_polar((x - head_radius, y))
 
     # Apply doppler shift in the time domain
@@ -111,6 +111,18 @@ def _(
     soundfile.write("out/out.wav", dopplered.T, sample_rate)
 
     mo.audio(dopplered, rate=sample_rate, normalize=True)
+    return
+
+
+@app.cell
+def _():
+    import slab
+    return (slab,)
+
+
+@app.cell
+def _(slab):
+    hrtf = slab.HRTF.kemar()
     return
 
 
